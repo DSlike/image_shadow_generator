@@ -1,13 +1,12 @@
-document.addEventListener('DOMContentLoaded', ()=>{
-  const _getPixelsColor = (img) => {
+const _getPixelsColor = (img) => {
     const canvas = document.createElement('canvas');
     const context = canvas.getContext('2d');
-    context.drawImage(img, 0, 0);
+    context.drawImage(img, 0, 0, img.clientWidth, img.clientHeight);
 
-    let ew = img.clientWidth-20;
-    let eh = img.clientHeight-20;
-    let sw = 20;//img.clientWidth/4;
-    let sh = 20;//img.clientHeight/4;
+    let ew = img.clientWidth-40;
+    let eh = img.clientHeight-40;
+    let sw = 40;
+    let sh = 40;
 
     let colors = [
       [...context.getImageData(sw,sh,1,1).data],
@@ -30,14 +29,13 @@ document.addEventListener('DOMContentLoaded', ()=>{
     const shadowSize = img.clientWidth/10;
 
     let shadow = [
-      `-${shadowSize}px -${shadowSize}px ${0}px -${0}px rgba(${cl[0]})`,
-      `${shadowSize}px -${shadowSize}px ${0}px -${0}px rgba(${cl[1]})`,
-      `${shadowSize}px ${shadowSize}px ${0}px -${0}px rgba(${cl[2]})`,
-      `-${shadowSize}px ${shadowSize}px ${0}px -${0}px rgba(${cl[3]})`
+      `-${shadowSize}px -${shadowSize}px ${shadowBlur}px -${shadowSize}px rgba(${cl[0]})`,
+      `${shadowSize}px -${shadowSize}px ${shadowBlur}px -${shadowSize}px rgba(${cl[1]})`,
+      `${shadowSize}px ${shadowSize}px ${shadowBlur}px -${shadowSize}px rgba(${cl[2]})`,
+      `-${shadowSize}px ${shadowSize}px ${shadowBlur}px -${shadowSize}px rgba(${cl[3]})`
     ];
 
     img.style.boxShadow = shadow.join(',');
-    // document.getElementById('block').style.boxShadow = shadow.join(',');
   }
   let images = document.getElementsByClassName('_isg');
 
@@ -45,4 +43,3 @@ document.addEventListener('DOMContentLoaded', ()=>{
     let img = images[i];
     img.onload = ()=>{ _drawShadow(img) };
   })
-});
