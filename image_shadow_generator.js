@@ -1,21 +1,25 @@
 const _getPixelsColor = (img) => {
     const canvas = document.createElement('canvas');
-    const context = canvas.getContext('2d');
-    context.drawImage(img, 0, 0, img.clientWidth, img.clientHeight);
+    const imgW = img.clientWidth;
+    const imgH = img.clientHeight;
+    canvas.width = imgW;
+    canvas.height = imgH;
+    const ctx = canvas.getContext('2d');
+    ctx.drawImage(img, 0, 0, img.clientWidth, imgH);
+    // document.body.appendChild(canvas);
 
-    let ew = img.clientWidth-40;
-    let eh = img.clientHeight-40;
-    let sw = 40;
-    let sh = 40;
+    let ew = imgW*90/100;
+    let eh = imgH*90/100;
+    let sw = 30;
+    let sh = 30;
 
     let colors = [
-      [...context.getImageData(sw,sh,1,1).data],
-      [...context.getImageData(ew,sh,1,1).data],
-      [...context.getImageData(ew,eh,1,1).data],
-      [...context.getImageData(sw,eh,1,1).data]
+      [...ctx.getImageData(sw,sh,1,1).data],
+      [...ctx.getImageData(ew,sh,1,1).data],
+      [...ctx.getImageData(ew,eh,1,1).data],
+      [...ctx.getImageData(sw,eh,1,1).data]
     ];
 
-    console.log(colors);
     return colors;
   }
   const _drawShadow = (img) => {
@@ -41,5 +45,6 @@ const _getPixelsColor = (img) => {
 
   Object.keys(images).forEach((i)=>{
     let img = images[i];
+    img.crossOrigin = "Anonymous";
     img.onload = ()=>{ _drawShadow(img) };
   })

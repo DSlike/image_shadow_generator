@@ -4,9 +4,11 @@ body{
   justify-content: center;
   align-items: center;
   background-color: white;
+  flex-direction: column;
 }
 
 img{
   width: 300px;
   border-radius: 8px;
+  transition: .3s;
 }
