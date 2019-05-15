@@ -59,8 +59,8 @@ class ImageShadowGenerator{
   }
 
   constructor(config){
-    this.offsetX = config.offsetX | 0;
-    this.offsetY = config.offsetY | 0;
+    this.offsetX = (config ? config.offsetX : 0) | 0;
+    this.offsetY = (config ? config.offsetY : 0) | 0;
 
     let images = document.getElementsByClassName('_isg');
 
