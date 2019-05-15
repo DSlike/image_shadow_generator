@@ -6,6 +6,7 @@ class ImageShadowGenerator{
     const imgH = img.clientHeight;
     canvas.width = imgW;
     canvas.height = imgH;
+
     const ctx = canvas.getContext('2d');
     ctx.drawImage(img, 0, 0, img.clientWidth, imgH);
 
@@ -30,9 +31,9 @@ class ImageShadowGenerator{
       return c;
     })
 
-    const shadowPos = img.clientWidth/10;
-    const shadowBlur = debug ? 0 : img.clientWidth/5;
-    const shadowSize = debug ? 0 : img.clientWidth/10;
+    let shadowPos = img.clientWidth/10;
+    let shadowBlur = debug ? 0 : img.clientWidth/5;
+    let shadowSize = debug ? 0 : img.clientWidth/10;
 
     const spx = [
       shadowPos-this.offsetX,
