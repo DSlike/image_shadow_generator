@@ -1,0 +1,22 @@
+{
+  "name": "image_shadow_generator",
+  "version": "1.0.0",
+  "description": "An plugin for automatically generate box-shadow for image based on image colors",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/DSlike/image_shadow_generator.git"
+  },
+  "author": "Daniel Votintsev",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/DSlike/image_shadow_generator/issues"
+  },
+  "homepage": "https://github.com/DSlike/image_shadow_generator#readme",
+  "dependencies": {
+    "express": "^4.16.4"
+  }
+}
