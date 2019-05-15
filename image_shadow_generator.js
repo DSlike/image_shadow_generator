@@ -28,7 +28,7 @@ class ImageShadowGenerator{
     let colors = this._getPixelsColor(img);
     let cl = colors.map((c)=>{
       c[3]=.5;
-      return c;
+      return c.slice(0,4);
     })
 
     let shadowPos = img.clientWidth/10;
@@ -36,16 +36,16 @@ class ImageShadowGenerator{
     let shadowSize = debug ? 0 : img.clientWidth/10;
 
     const spx = [
-      shadowPos-this.offsetX,
-      shadowPos+this.offsetX,
-      shadowPos+this.offsetX,
-      shadowPos-this.offsetX
+      shadowPos-this.config.offsetX,
+      shadowPos+this.config.offsetX,
+      shadowPos+this.config.offsetX,
+      shadowPos-this.config.offsetX
     ];
     const spy = [
-      shadowPos-this.offsetY,
-      shadowPos-this.offsetY,
-      shadowPos+this.offsetY,
-      shadowPos+this.offsetY
+      shadowPos-this.config.offsetY,
+      shadowPos-this.config.offsetY,
+      shadowPos+this.config.offsetY,
+      shadowPos+this.config.offsetY
     ];
 
     let shadow = [
@@ -55,19 +55,47 @@ class ImageShadowGenerator{
       `-${spx[3]}px ${spy[3]}px ${shadowBlur}px -${shadowSize}px rgba(${cl[3]})`
     ];
 
-    img.style.boxShadow = shadow.join(',');
+    return shadow;
+  }
+
+  _applyStyles(img, index) {
+    const styles = this._drawShadow(img);
+    let styleElement = document.getElementById('_isg-style');
+
+    if(!styleElement){
+      styleElement = document.createElement('style');
+      styleElement.setAttribute('id', '_isg-style');
+      document.head.appendChild(styleElement);
+    }
+
+    styleElement.innerHTML = `
+      .${this.config.imgClass}._isg-${index} {
+        box-shadow: ${styles.join(',')};
+        -webkit-box-shadow: ${styles.join(',')};
+        -moz--box-shadow: ${styles.join(',')};
+      }
+    `;
   }
 
   constructor(config){
-    this.offsetX = (config ? config.offsetX : 0) | 0;
-    this.offsetY = (config ? config.offsetY : 0) | 0;
+    this.config = {
+      offsetX: 0,
+      offsetY: 0,
+      imgClass: '_isg'
+    };
 
-    let images = document.getElementsByClassName('_isg');
+    if(config){
+      this.offsetX = config.offsetX | 0;
+      this.offsetY = config.offsetY | 0;
+      this.imgClass = config.imgClass | '_isg';
+    }
+
+    let images = document.getElementsByClassName(this.config.imgClass);
 
     Object.keys(images).forEach((i)=>{
       let img = images[i];
-      img.crossOrigin = "Anonymous";
-      img.onload = ()=>{ this._drawShadow(img) };
+      img.className = img.className+' _isg-'+i;
+      img.addEventListener('load', ()=>{ this._applyStyles(img, i) }, false);
     })
   }
 }
