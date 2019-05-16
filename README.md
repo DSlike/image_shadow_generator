@@ -33,4 +33,4 @@ An plugin for automatically generate box-shadow for image based on image colors.
 
 ### Debug mode shadows map
 
-[Debug image](https://raw.githubusercontent.com/DSlike/image_shadow_generator/master/debug.png "Example image")
+![Debug image](https://raw.githubusercontent.com/DSlike/image_shadow_generator/master/debug.png "Example image")
