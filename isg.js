@@ -10,16 +10,20 @@ class ImageShadowGenerator{
     const ctx = canvas.getContext('2d');
     ctx.drawImage(img, 0, 0, img.clientWidth, imgH);
 
-    let ew = imgW*90/100;
-    let eh = imgH*90/100;
-    let sw = 30;
-    let sh = 30;
+    let ew = imgW*99/100;
+    let eh = imgH*99/100;
+    let sw = imgW/100;
+    let sh = imgW/100;
 
     let colors = [
       [...ctx.getImageData(sw,sh,1,1).data],
+      [...ctx.getImageData(ew/2,sh,1,1).data],
       [...ctx.getImageData(ew,sh,1,1).data],
+      [...ctx.getImageData(ew,eh/2,1,1).data],
       [...ctx.getImageData(ew,eh,1,1).data],
-      [...ctx.getImageData(sw,eh,1,1).data]
+      [...ctx.getImageData(ew/2,eh,1,1).data],
+      [...ctx.getImageData(sw,eh,1,1).data],
+      [...ctx.getImageData(sw,eh/2,1,1).data]
     ];
     return colors;
   }
@@ -37,22 +41,34 @@ class ImageShadowGenerator{
 
     const spx = [
       shadowPos-this.config.offsetX,
+      0+this.config.offsetX,
       shadowPos+this.config.offsetX,
       shadowPos+this.config.offsetX,
+      shadowPos+this.config.offsetX,
+      0+this.config.offsetX,
+      shadowPos-this.config.offsetX,
       shadowPos-this.config.offsetX
     ];
     const spy = [
       shadowPos-this.config.offsetY,
-      shadowPos-this.config.offsetY,
       shadowPos+this.config.offsetY,
-      shadowPos+this.config.offsetY
+      shadowPos-this.config.offsetY,
+      0+this.config.offsetY,
+      shadowPos+this.config.offsetY,
+      shadowPos+this.config.offsetY,
+      shadowPos+this.config.offsetY,
+      0+this.config.offsetY
     ];
 
     let shadow = [
       `-${spx[0]}px -${spy[0]}px ${shadowBlur}px -${shadowSize}px rgba(${cl[0]})`,
-      `${spx[1]}px -${spy[1]}px ${shadowBlur}px -${shadowSize}px rgba(${cl[1]})`,
-      `${spx[2]}px ${spy[2]}px ${shadowBlur}px -${shadowSize}px rgba(${cl[2]})`,
-      `-${spx[3]}px ${spy[3]}px ${shadowBlur}px -${shadowSize}px rgba(${cl[3]})`
+      `-${spx[1]}px -${spy[1]}px ${shadowBlur}px -${shadowSize}px rgba(${cl[1]})`,
+      `${spx[2]}px -${spy[2]}px ${shadowBlur}px -${shadowSize}px rgba(${cl[2]})`,
+      `${spx[3]}px -${spy[3]}px ${shadowBlur}px -${shadowSize}px rgba(${cl[3]})`,
+      `${spx[4]}px ${spy[4]}px ${shadowBlur}px -${shadowSize}px rgba(${cl[4]})`,
+      `${spx[5]}px ${spy[5]}px ${shadowBlur}px -${shadowSize}px rgba(${cl[5]})`,
+      `-${spx[6]}px ${spy[6]}px ${shadowBlur}px -${shadowSize}px rgba(${cl[6]})`,
+      `-${spx[7]}px ${spy[7]}px ${shadowBlur}px -${shadowSize}px rgba(${cl[7]})`
     ];
 
     return shadow;
@@ -73,6 +89,7 @@ class ImageShadowGenerator{
         box-shadow: ${styles.join(',')};
         -webkit-box-shadow: ${styles.join(',')};
         -moz--box-shadow: ${styles.join(',')};
+        transition: .3s;
       }
     `;
   }
