@@ -123,9 +123,9 @@ class ImageShadowGenerator{
   _processConfigs(config){
     this.config = {
       offsetX: 0,
-      offsetY: 0,
+      offsetY: 50,
       imgClass: '_isg',
-      shadowBlur: 95,
+      shadowBlur: 40,
       hoverBlurSize: 90,
       hover: false,
       debug: false
