@@ -27,7 +27,7 @@ class ImageShadowGenerator{
     ];
     return colors;
   }
-  _drawShadow(img) {
+  _drawShadow(img, hover) {
     const debug = false;
     let colors = this._getPixelsColor(img);
     let cl = colors.map((c)=>{
@@ -36,7 +36,14 @@ class ImageShadowGenerator{
     })
 
     let shadowPos = img.clientWidth/10;
-    let shadowBlur = debug ? 0 : img.clientWidth/5;
+    let shadowBlur = debug ? 0 : this.config.shadowBlur*img.clientWidth/100;
+
+    if(hover) {
+      shadowBlur = debug ? 0 : this.config.hoverBlurSize*img.clientWidth/100;
+    }
+
+    console.log(img.clientWidth, shadowBlur);
+
     let shadowSize = debug ? 0 : img.clientWidth/10;
 
     const spx = [
@@ -75,8 +82,20 @@ class ImageShadowGenerator{
   }
 
   _applyStyles(img, index) {
-    const styles = this._drawShadow(img);
+    const styles = this._drawShadow(img, false);
     let styleElement = document.getElementById('_isg-style');
+    let hoverStyleSheet = ``;
+
+    if(this.config.hover === true) {
+      const hoverStyles = this._drawShadow(img, true);
+      hoverStyleSheet = `
+        .${this.config.imgClass}._isg-${index}:hover {
+          box-shadow: ${hoverStyles.join(',')};
+          -webkit-box-shadow: ${hoverStyles.join(',')};
+          -moz--box-shadow: ${hoverStyles.join(',')};
+        }
+      `;
+    }
 
     if(!styleElement){
       styleElement = document.createElement('style');
@@ -91,6 +110,7 @@ class ImageShadowGenerator{
         -moz--box-shadow: ${styles.join(',')};
         transition: .3s;
       }
+      ${hoverStyleSheet}
     `;
   }
 
@@ -98,14 +118,19 @@ class ImageShadowGenerator{
     this.config = {
       offsetX: 0,
       offsetY: 0,
-      imgClass: '_isg'
+      imgClass: '_isg',
+      shadowBlur: 95,
+      hoverBlurSize: 90,
+      hover: true
     };
 
     if(config){
-      this.offsetX = config.offsetX | 0;
-      this.offsetY = config.offsetY | 0;
-      this.imgClass = config.imgClass | '_isg';
+      Object.keys(config).forEach((key)=>{
+        this.config[key] = config[key];
+      })
     }
+
+    console.log(this.config);
 
     let images = document.getElementsByClassName(this.config.imgClass);
 
