@@ -1,4 +1,5 @@
-sample*.jpg
-sample*.png
+*.jpg
+*.png
 package-lock.json
 node_modules/
+*.mov
