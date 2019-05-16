@@ -28,7 +28,10 @@ class ImageShadowGenerator{
     return colors;
   }
   _drawShadow(img, hover) {
-    const debug = false;
+    const debug = this.config.debug;
+    let offX = this.config.offsetX;
+    let offY = this.config.offsetY;
+
     let colors = this._getPixelsColor(img);
     let cl = colors.map((c)=>{
       c[3]= c[3]==0 ? 0 : .5;
@@ -42,36 +45,40 @@ class ImageShadowGenerator{
       shadowBlur = debug ? 0 : this.config.hoverBlurSize*img.clientWidth/100;
     }
 
-    console.log(img.clientWidth, shadowBlur);
-
     let shadowSize = debug ? 0 : img.clientWidth/10;
 
+    if(debug && hover){
+      offX=0;
+      offY=0;
+    }
+
     const spx = [
-      shadowPos-this.config.offsetX,
-      0+this.config.offsetX,
-      shadowPos+this.config.offsetX,
-      shadowPos+this.config.offsetX,
-      shadowPos+this.config.offsetX,
-      0+this.config.offsetX,
-      shadowPos-this.config.offsetX,
-      shadowPos-this.config.offsetX
+      shadowPos-offX,
+      0+offX,
+      shadowPos+offX,
+      shadowPos+offX,
+      shadowPos+offX,
+      0+offX,
+      shadowPos-offX,
+      shadowPos-offX,
     ];
+
     const spy = [
-      shadowPos-this.config.offsetY,
-      shadowPos+this.config.offsetY,
-      shadowPos-this.config.offsetY,
-      0+this.config.offsetY,
-      shadowPos+this.config.offsetY,
-      shadowPos+this.config.offsetY,
-      shadowPos+this.config.offsetY,
-      0+this.config.offsetY
+      shadowPos-offY,
+      shadowPos-offY,
+      shadowPos-offY,
+      0+offY,
+      shadowPos+offY,
+      shadowPos+offY,
+      shadowPos+offY,
+      0+offY
     ];
 
     let shadow = [
       `-${spx[0]}px -${spy[0]}px ${shadowBlur}px -${shadowSize}px rgba(${cl[0]})`,
-      `-${spx[1]}px -${spy[1]}px ${shadowBlur}px -${shadowSize}px rgba(${cl[1]})`,
+      `${spx[1]}px -${spy[1]}px ${shadowBlur}px -${shadowSize}px rgba(${cl[1]})`,
       `${spx[2]}px -${spy[2]}px ${shadowBlur}px -${shadowSize}px rgba(${cl[2]})`,
-      `${spx[3]}px -${spy[3]}px ${shadowBlur}px -${shadowSize}px rgba(${cl[3]})`,
+      `${spx[3]}px ${spy[3]}px ${shadowBlur}px -${shadowSize}px rgba(${cl[3]})`,
       `${spx[4]}px ${spy[4]}px ${shadowBlur}px -${shadowSize}px rgba(${cl[4]})`,
       `${spx[5]}px ${spy[5]}px ${shadowBlur}px -${shadowSize}px rgba(${cl[5]})`,
       `-${spx[6]}px ${spy[6]}px ${shadowBlur}px -${shadowSize}px rgba(${cl[6]})`,
@@ -113,15 +120,15 @@ class ImageShadowGenerator{
       ${hoverStyleSheet}
     `;
   }
-
-  constructor(config){
+  _processConfigs(config){
     this.config = {
       offsetX: 0,
       offsetY: 0,
       imgClass: '_isg',
       shadowBlur: 95,
       hoverBlurSize: 90,
-      hover: true
+      hover: false,
+      debug: false
     };
 
     if(config){
@@ -130,7 +137,14 @@ class ImageShadowGenerator{
       })
     }
 
-    console.log(this.config);
+    if(this.config.debug == true) this.config.hover=true;
+
+    this.config.offsetX = (this.config.offsetX*30)/100;
+    this.config.offsetY = (this.config.offsetY*30)/100;
+  }
+
+  constructor(config){
+    this._processConfigs(config);
 
     let images = document.getElementsByClassName(this.config.imgClass);
 
