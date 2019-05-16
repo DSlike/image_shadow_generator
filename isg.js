@@ -10,10 +10,10 @@ class ImageShadowGenerator{
     const ctx = canvas.getContext('2d');
     ctx.drawImage(img, 0, 0, img.clientWidth, imgH);
 
-    let ew = imgW*99/100;
-    let eh = imgH*99/100;
-    let sw = imgW/100;
-    let sh = imgW/100;
+    let ew = imgW*95/100;
+    let eh = imgH*95/100;
+    let sw = imgW*5/100;
+    let sh = imgW*5/100;
 
     let colors = [
       [...ctx.getImageData(sw,sh,1,1).data],
@@ -31,7 +31,7 @@ class ImageShadowGenerator{
     const debug = false;
     let colors = this._getPixelsColor(img);
     let cl = colors.map((c)=>{
-      c[3]=.5;
+      c[3]= c[3]==0 ? 0 : .5;
       return c.slice(0,4);
     })
 
