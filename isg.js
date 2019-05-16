@@ -112,7 +112,10 @@ class ImageShadowGenerator{
     Object.keys(images).forEach((i)=>{
       let img = images[i];
       img.className = img.className+' _isg-'+i;
-      img.addEventListener('load', ()=>{ this._applyStyles(img, i) }, false);
+      if(img.tagName == 'IMG')
+        img.addEventListener('load', ()=>{ this._applyStyles(img, i) }, false);
+      else if(img.tagName == 'VIDEO')
+        img.ontimeupdate = () => { this._applyStyles(img, i) };
     })
   }
 }
