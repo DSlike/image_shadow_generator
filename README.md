@@ -1,7 +1,7 @@
 # image_shadow_generator
 An plugin for automatically generate box-shadow for image based on image colors.
 
-![alt text](https://raw.githubusercontent.com/DSlike/image_shadow_generator/master/demo.png "Example image")
+![Demo GIF](https://raw.githubusercontent.com/DSlike/image_shadow_generator/master/demo.gif "Example image")
 
 ### Usage:
  - Connect script file to your page
